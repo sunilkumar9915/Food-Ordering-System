@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+
+    <nav>
+
+        🍔 Admin Dashboard
+
+    </nav>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>🍔 Foods</h2>
+
+            <h1 id="foods">0</h1>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📦 Orders</h2>
+
+            <h1 id="orders">0</h1>
+
+        </div>
+
+        <div class="card">
+
+            <h2>👤 Users</h2>
+
+            <h1 id="users">0</h1>
+
+        </div>
+
+        <div class="card">
+
+            <h2>💰 Revenue</h2>
+
+            <h1 id="revenue">₹0</h1>
+
+        </div>
+
+    </div>
+    <div style="text-align:center; margin:20px;">
+
+        <a href="allOrders.html">
+
+            <button style="
+            padding:15px 30px;
+            background:#ff4d4d;
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-size:18px;
+            cursor:pointer;
+        ">
+            📦 Manage Orders
+        </button>
+
+        </a>
+
+    </div>
+    <div class="ordersSection">
+
+        <h2>📦 Latest Orders</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="ordersTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>

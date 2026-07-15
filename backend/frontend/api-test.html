@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering API Test</title>
+</head>
+
+<body>
+
+    <h1>Food Ordering API Test</h1>
+
+    <button onclick="signup()">Signup</button>
+    <button onclick="login()">Login</button>
+    <button onclick="getProfile()">Get Profile</button>
+    <button onclick="logout()">Logout</button>
+
+    <br><br>
+
+    <pre id="result"></pre>
+
+    <script>
+        // ==========================
+        // Signup
+        // ==========================
+        async function signup() {
+
+            try {
+
+                const res = await fetch("http://localhost:5000/api/auth/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: "Ashish",
+                        email: "ashish123@gmail.com",
+                        password: "123456"
+                    })
+                });
+
+                const data = await res.json();
+
+                document.getElementById("result").innerText =
+                    JSON.stringify(data, null, 2);
+
+            } catch (err) {
+
+                document.getElementById("result").innerText = err.message;
+
+            }
+
+        }
+
+        // ==========================
+        // Login
+        // ==========================
+        async function login() {
+
+            try {
+
+                const res = await fetch("http://localhost:5000/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: "ashish123@gmail.com",
+                        password: "123456"
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+
+                    // Token Save
+                    localStorage.setItem("token", data.token);
+
+                    alert("Login Successful");
+                }
+
+                document.getElementById("result").innerText =
+                    JSON.stringify(data, null, 2);
+
+            } catch (err) {
+
+                document.getElementById("result").innerText = err.message;
+
+            }
+
+        }
+
+        // ==========================
+        // Get Profile
+        // ==========================
+        async function getProfile() {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                alert("Pehle Login karo");
+                return;
+            }
+
+            try {
+
+                const res = await fetch("http://localhost:5000/api/auth/profile", {
+
+                    method: "GET",
+
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+
+                });
+
+                const data = await res.json();
+
+                document.getElementById("result").innerText =
+                    JSON.stringify(data, null, 2);
+
+            } catch (err) {
+
+                document.getElementById("result").innerText = err.message;
+
+            }
+
+        }
+
+        // ==========================
+        // Logout
+        // ==========================
+        function logout() {
+
+            localStorage.removeItem("token");
+
+            alert("Logout Successful");
+
+            document.getElementById("result").innerText = "";
+
+        }
+    </script>
+
+</body>
+
+</html>

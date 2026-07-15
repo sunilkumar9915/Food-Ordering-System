@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+        
+        body {
+            background: #f4f4f4;
+        }
+        
+        nav {
+            background: #ff6600;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        
+        .container {
+            width: 450px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, .2);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+        
+        textarea {
+            resize: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        button:hover {
+            background: #e65c00;
+        }
+        
+        #total {
+            font-size: 25px;
+            color: green;
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+
+        🍔 Food Ordering Website
+
+    </nav>
+
+    <div class="container">
+
+        <h2>Checkout</h2>
+
+        <input type="text" id="customerName" placeholder="Enter Your Name">
+
+        <input type="text" id="customerPhone" placeholder="Enter Phone Number">
+
+        <textarea id="customerAddress" rows="5" placeholder="Enter Address"></textarea>
+
+        <div id="total">
+
+            ₹0
+
+        </div>
+
+        <button onclick="placeOrder()">
+
+            📦 Place Order
+
+        </button>
+
+    </div>
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        let total = 0;
+
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+        });
+
+        document.getElementById("total").innerHTML = "Total : ₹" + total;
+
+        // ==========================
+        // PLACE ORDER
+        // ==========================
+        async function placeOrder() {
+
+            const customerName = document.getElementById("customerName").value;
+            const phone = document.getElementById("customerPhone").value;
+            const address = document.getElementById("customerAddress").value;
+
+            if (!customerName || !phone || !address) {
+
+                alert("Please Fill All Details");
+                return;
+
+            }
+
+            // Customer Details Save
+            localStorage.setItem("customerName", customerName);
+            localStorage.setItem("customerPhone", phone);
+            localStorage.setItem("customerAddress", address);
+
+            // Cart Save
+            localStorage.setItem("cartData", JSON.stringify(cart));
+
+            // Total Save
+            localStorage.setItem("totalAmount", total);
+
+            // Payment Page Open
+            window.location.href = "payment.html";
+
+        }
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f8fafc;
+    padding: 30px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 55px;
+    color: #ff4d4d;
+    margin: 20px 0 50px;
+    font-weight: 700;
+}
+
+#ordersContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.orderCard {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .10);
+    transition: all .3s ease;
+    border: none;
+}
+
+.orderCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+}
+
+.customerName {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.info {
+    font-size: 17px;
+    color: #555;
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.total {
+    color: #27ae60;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.status {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.pending {
+    background: #f39c12;
+}
+
+.confirmed {
+    background: #3498db;
+}
+
+.preparing {
+    background: #9b59b6;
+}
+
+.delivery {
+    background: #e67e22;
+}
+
+.delivered {
+    background: #27ae60;
+}
+
+select {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f4f6;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+}
+
+.orderItem {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+.orderItem img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.orderItem h3 {
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.orderItem p {
+    color: #666;
+}

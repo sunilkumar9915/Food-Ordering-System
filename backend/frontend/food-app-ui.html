@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering UI</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 15px;
+            font-size: 30px;
+        }
+        
+        button {
+            margin: 6px;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            background: white;
+            color: #333;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            background: #ff9800;
+            color: white;
+        }
+        
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        .card {
+            background: white;
+            color: black;
+            width: 280px;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            margin: 5px 0;
+        }
+        
+        .status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: orange;
+            color: white;
+            display: inline-block;
+            font-size: 12px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>🍔 Food Ordering UI</h1>
+
+    <button onclick="signup()">Signup</button>
+    <button onclick="login()">Login</button>
+    <button onclick="addFood()">Add Food</button>
+    <button onclick="getFoods()">Get Foods</button>
+    <button onclick="getOrders()">My Orders</button>
+    <button onclick="logout()">Logout</button>
+
+    <div id="container"></div>
+
+    <script>
+        let token = localStorage.getItem("token") || "";
+
+        /* ================= SIGNUP ================= */
+        async function signup() {
+            const r = await fetch("http://localhost:5000/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: "Ashish",
+                    email: "ashish123@gmail.com",
+                    password: "123456"
+                })
+            });
+
+            alert((await r.json()).message);
+        }
+
+        /* ================= LOGIN ================= */
+        async function login() {
+            const r = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: "ashish123@gmail.com",
+                    password: "123456"
+                })
+            });
+
+            const d = await r.json();
+
+            if (d.success) {
+                token = d.token;
+                localStorage.setItem("token", token);
+                alert("Login Successful");
+            } else {
+                alert("Login Failed");
+            }
+        }
+
+        /* ================= ADD FOOD ================= */
+        async function addFood() {
+
+            const name = prompt("Food Name");
+            const description = prompt("Description");
+            const price = prompt("Price");
+            const category = prompt("Category");
+
+            const r = await fetch("http://localhost:5000/api/foods", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    description,
+                    price: Number(price),
+                    category,
+                    image: ""
+                })
+            });
+
+            alert((await r.json()).message || "Added");
+
+            getFoods();
+        }
+
+        /* ================= GET FOODS ================= */
+        async function getFoods() {
+
+            const r = await fetch("http://localhost:5000/api/foods");
+            const d = await r.json();
+
+            let html = "";
+
+            d.foods.forEach(food => {
+                html += `
+        <div class="card">
+            <h2>${food.name}</h2>
+            <p>${food.description}</p>
+            <p><b>₹${food.price}</b></p>
+            <p>${food.category}</p>
+
+            <button onclick="updateFood('${food._id}')">✏️ Update</button>
+            <button onclick="deleteFood('${food._id}')">🗑 Delete</button>
+        </div>
+        `;
+            });
+
+            document.getElementById("container").innerHTML = html;
+        }
+
+        /* ================= DELETE FOOD ================= */
+        async function deleteFood(id) {
+
+            const r = await fetch("http://localhost:5000/api/foods/" + id, {
+                method: "DELETE"
+            });
+
+            alert((await r.json()).message || "Deleted");
+
+            getFoods();
+        }
+
+        /* ================= UPDATE FOOD ================= */
+        async function updateFood(id) {
+
+            const name = prompt("New Name");
+            const description = prompt("New Description");
+            const price = prompt("New Price");
+            const category = prompt("New Category");
+
+            const r = await fetch("http://localhost:5000/api/foods/" + id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    description,
+                    price: Number(price),
+                    category
+                })
+            });
+
+            alert((await r.json()).message || "Updated");
+
+            getFoods();
+        }
+
+        /* ================= GET ORDERS ================= */
+        async function getOrders() {
+
+            if (!token) {
+                alert("Login First");
+                return;
+            }
+
+            const res = await fetch("http://localhost:5000/api/orders", {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const data = await res.json();
+
+            let html = "<h2>🧾 My Orders</h2>";
+
+            data.orders.forEach(order => {
+                html += `
+        <div class="card">
+            <h3>Order ID: ${order._id}</h3>
+            <p><b>Status:</b> ${order.status}</p>
+            <p><b>Total:</b> ₹${order.totalAmount}</p>
+        </div>
+        `;
+            });
+
+            document.getElementById("container").innerHTML = html;
+        }
+
+        /* ================= LOGOUT ================= */
+        function logout() {
+            localStorage.removeItem("token");
+            token = "";
+            alert("Logged Out");
+        }
+    </script>
+
+</body>
+
+</html>
