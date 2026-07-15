@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Food API UI</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        .name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .price {
+            color: green;
+        }
+        
+        pre {
+            background: #111;
+            color: #0f0;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🍔 Food Ordering UI</h1>
+
+    <button onclick="signup()">Signup</button>
+    <button onclick="login()">Login</button>
+    <button onclick="addFood()">Add Food</button>
+    <button onclick="getFoods()">Get Foods</button>
+    <button onclick="placeOrder()">Place Order</button>
+    <button onclick="getOrders()">My Orders</button>
+
+    <div id="container"></div>
+
+    <pre id="debug"></pre>
+
+    <script>
+        let token = "";
+
+        function show(data) {
+            document.getElementById("debug").innerText =
+                JSON.stringify(data, null, 2);
+        }
+
+        // ================= SIGNUP =================
+        async function signup() {
+            const res = await fetch("http://localhost:5000/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: "Ashish",
+                    email: "ashish" + Math.floor(Math.random() * 1000) + "@gmail.com",
+                    password: "123456"
+                })
+            });
+
+            const data = await res.json();
+            show(data);
+        }
+
+        // ================= LOGIN =================
+        async function login() {
+            const res = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: "ashish@gmail.com",
+                    password: "123456"
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                token = data.token;
+                alert("Login successful ✔ Token saved");
+            } else {
+                alert("Login failed ❌");
+            }
+
+            show(data);
+        }
+
+        // ================= ADD FOOD =================
+        async function addFood() {
+            const res = await fetch("http://localhost:5000/api/foods", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: "Pizza",
+                    description: "Cheese Pizza",
+                    price: 199,
+                    category: "Fast Food",
+                    image: ""
+                })
+            });
+
+            const data = await res.json();
+            show(data);
+            getFoods();
+        }
+
+        // ================= GET FOODS =================
+        async function getFoods() {
+            const res = await fetch("http://localhost:5000/api/foods");
+            const data = await res.json();
+
+            const container = document.getElementById("container");
+            container.innerHTML = "";
+
+            data.foods.forEach(food => {
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="name">${food.name}</div>
+                        <div>${food.description}</div>
+                        <div class="price">₹${food.price}</div>
+                        <div>${food.category}</div>
+                    </div>
+                `;
+            });
+
+            show(data);
+        }
+
+        // ================= PLACE ORDER =================
+        async function placeOrder() {
+
+            if (!token) {
+                alert("Login first bro 🔐");
+                return;
+            }
+
+            const foodId = prompt("Enter Food ID:");
+
+            const res = await fetch("http://localhost:5000/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    items: [{
+                        food: foodId,
+                        quantity: 1
+                    }],
+                    totalAmount: 200
+                })
+            });
+
+            const data = await res.json();
+            show(data);
+        }
+
+        // ================= GET ORDERS =================
+        async function getOrders() {
+
+            if (!token) {
+                alert("Login first bro 🔐");
+                return;
+            }
+
+            const res = await fetch("http://localhost:5000/api/orders", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await res.json();
+            show(data);
+        }
+    </script>
+
+</body>
+
+</html>

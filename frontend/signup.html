@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food Ordering - Signup</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .signup-box {
+            width: 420px;
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #ff6b00;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #e65c00;
+        }
+        
+        .link {
+            text-align: center;
+            margin-top: 18px;
+        }
+        
+        .link a {
+            text-decoration: none;
+            color: #2575fc;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="signup-box">
+
+        <h1>🍔 Create Account</h1>
+
+        <input type="text" id="name" placeholder="Enter Full Name">
+
+        <input type="email" id="email" placeholder="Enter Email">
+
+        <input type="text" id="phone" placeholder="Enter Phone Number">
+
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button onclick="signup()">
+
+Create Account
+
+</button>
+
+        <div class="link">
+
+            Already have an account?
+
+            <a href="login.html">
+
+Login
+
+</a>
+
+        </div>
+
+        <script>
+            async function signup() {
+
+                const name = document.getElementById("name").value;
+                const email = document.getElementById("email").value;
+                const phone = document.getElementById("phone").value;
+                const password = document.getElementById("password").value;
+
+                if (!name || !email || !password) {
+
+                    alert("Please fill all required fields");
+                    return;
+
+                }
+
+                try {
+
+                    const res = await fetch("http://localhost:5000/api/auth/signup", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            password: password
+
+                        })
+
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+
+                        alert("Account Created Successfully!");
+
+                        window.location.href = "login.html";
+
+                    } else {
+
+                        alert(data.message || "Signup Failed");
+
+                    }
+
+                } catch (error) {
+
+                    alert("Server is not running!");
+
+                }
+
+            }
+        </script>
+
+    </div>
+
+</body>
+
+</html>

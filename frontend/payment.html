@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment</title>
+
+    <link rel="stylesheet" href="payment.css">
+
+</head>
+
+<body>
+
+    <div class="paymentBox">
+
+        <h1>💳 Secure Payment</h1>
+
+        <h3>Total Amount</h3>
+
+        <h2 id="totalAmount">₹0</h2>
+
+        <hr><br>
+
+        <h3>Select Payment Method</h3>
+
+        <label>
+            <input type="radio" name="payment" value="Google Pay" checked>
+            Google Pay
+        </label>
+
+        <br><br>
+
+        <label>
+            <input type="radio" name="payment" value="PhonePe">
+            PhonePe
+        </label>
+
+        <br><br>
+
+        <label>
+            <input type="radio" name="payment" value="Paytm">
+            Paytm
+        </label>
+
+        <br><br>
+
+        <label>
+            <input type="radio" name="payment" value="Credit Card">
+            Credit Card
+        </label>
+
+        <br><br>
+
+        <label>
+            <input type="radio" name="payment" value="Debit Card">
+            Debit Card
+        </label>
+
+        <br><br>
+
+        <button onclick="payNow()">
+
+            💳 Pay Now
+
+        </button>
+
+    </div>
+
+    <script src="payment.js"></script>
+
+</body>
+
+</html>

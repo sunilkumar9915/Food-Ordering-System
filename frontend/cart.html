@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+        }
+        
+        nav {
+            background: #ff6600;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 25px;
+        }
+        
+        #cartContainer {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+        }
+        
+        .cartCard {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, .2);
+        }
+        
+        .foodInfo h2 {
+            margin-bottom: 10px;
+        }
+        
+        .foodInfo p {
+            margin: 5px 0;
+        }
+        
+        .totalBox {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, .2);
+            text-align: center;
+        }
+        
+        #totalPrice {
+            font-size: 28px;
+            color: green;
+            margin: 15px;
+        }
+        
+        button {
+            background: #ff6600;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #e65c00;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+        🍔 Food Ordering Website
+    </nav>
+
+    <h1>🛒 My Cart</h1>
+
+    <div id="cartContainer">
+
+    </div>
+
+
+    <div class="totalBox">
+
+        <h2>Total Price</h2>
+
+        <div id="totalPrice">
+            ₹0
+        </div>
+        <button onclick="goToCheckout()">
+    🛍 Proceed To Checkout
+</button>
+    </div>
+
+
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        let container = document.getElementById("cartContainer");
+
+        let totalPrice = 0;
+
+        function loadCart() {
+
+            container.innerHTML = "";
+
+            totalPrice = 0;
+
+            if (cart.length === 0) {
+
+                container.innerHTML = "<h2 style='text-align:center;'>🛒 Cart is Empty</h2>";
+
+                document.getElementById("totalPrice").innerHTML = "₹0";
+
+                return;
+            }
+
+            cart.forEach((item) => {
+
+                        totalPrice += item.price * item.quantity;
+
+
+                        container.innerHTML += `
+
+<div class="cartCard" style="display:flex;align-items:center;gap:20px;border:1px solid #ccc;padding:15px;margin:15px 0;">
+
+${item.image ? `
+<img src="${item.image}"
+style="width:150px;height:120px;object-fit:cover;border:2px solid red;border-radius:10px;">
+` : ""}
+    <div class="foodInfo">
+
+        <h2>${item.name}</h2>
+
+        <p>Price : ₹${item.price}</p>
+
+        <p>
+            <button onclick="decreaseQuantity('${item.id}')">➖</button>
+
+            <b style="margin:0 10px;">${item.quantity}</b>
+
+            <button onclick="increaseQuantity('${item.id}')">➕</button>
+        </p>
+
+        <p><b>Subtotal : ₹${item.price * item.quantity}</b></p>
+
+        <br>
+
+        <button onclick="removeItem('${item.id}')">
+            🗑 Remove
+        </button>
+
+    </div>
+
+</div>
+
+                `;
+            });
+
+            document.getElementById("totalPrice").innerHTML = "₹" + totalPrice;
+
+        }
+
+        function increaseQuantity(id) {
+
+            cart = cart.map(item => {
+
+                if (item.id === id) {
+                    item.quantity++;
+                }
+
+                return item;
+
+            });
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            loadCart();
+
+        }
+
+        function decreaseQuantity(id) {
+
+            cart = cart.map(item => {
+
+                if (item.id === id && item.quantity > 1) {
+                    item.quantity--;
+                }
+
+                return item;
+
+            });
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            loadCart();
+
+        }
+
+        function removeItem(id) {
+
+            cart = cart.filter(item => item.id !== id);
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            loadCart();
+
+        }
+
+        loadCart();
+        function goToCheckout() {
+
+    if (cart.length === 0) {
+        alert("🛒 Cart is Empty");
+        return;
+    }
+
+    // Total amount save
+    localStorage.setItem("totalAmount", totalPrice);
+
+    // Payment Page Open
+    window.location.href = "payment.html";
+}
+    </script>
+
+</body>
+
+</html>
+
+
+</body>
+
+</html>

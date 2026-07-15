@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food Details</title>
+
+    <link rel="stylesheet" href="foodDetails.css">
+
+</head>
+
+<body>
+
+    <nav>
+
+        🍔 Food Details
+
+    </nav>
+
+    <div class="container">
+
+        <div class="imageBox">
+
+            <img id="foodImage">
+
+        </div>
+
+        <div class="details">
+
+            <h1 id="foodName"></h1>
+            <div id="ratingBox" style="margin:10px 0;font-size:20px;font-weight:bold;color:#ff9800;">
+
+                ⭐ 0.0 (0 Reviews)
+
+            </div>
+
+            <h2 id="foodPrice"></h2>
+
+            <p id="foodCategory"></p>
+
+            <p id="foodDescription"></p>
+
+            <br>
+
+            <button id="cartBtn">
+
+                🛒 Add To Cart
+
+            </button>
+
+            <button id="wishBtn">
+
+                ❤️ Wishlist
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="reviewSection">
+        <h2>⭐⭐⭐⭐⭐ Customer Reviews</h2>
+
+        <select id="rating">
+
+        <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="1">⭐</option>
+
+    </select>
+
+        <br><br>
+
+        <textarea id="reviewText" placeholder="Write your review..." rows="4" style="width:100%;padding:10px;"></textarea>
+
+        <br><br>
+
+        <button onclick="submitReview()">
+
+        Submit Review
+
+    </button>
+
+        <hr><br>
+
+        <div id="reviewsContainer">
+
+        </div>
+
+    </div>
+    <h2>🍴 You May Also Like</h2>
+
+    <div id="relatedFoods" class="relatedFoods"></div>
+
+
+    <script src="foodDetails.js"></script>
+
+</body>
+
+</html>

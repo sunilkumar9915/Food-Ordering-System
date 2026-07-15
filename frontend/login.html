@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering - Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-box {
+            width: 380px;
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #ff6b00;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .3s;
+        }
+        
+        button:hover {
+            background: #e65c00;
+        }
+        
+        .link {
+            text-align: center;
+            margin-top: 18px;
+        }
+        
+        .link a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>🍔 Food Ordering</h1>
+
+        <input type="email" id="email" placeholder="Enter Email">
+
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button onclick="login()">
+Login
+</button>
+
+        <div class="link">
+            New User?
+            <a href="signup.html">
+Create Account
+</a>
+        </div>
+
+        <script>
+            async function login() {
+
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                if (!email || !password) {
+                    alert("Please fill all fields");
+                    return;
+                }
+
+                try {
+
+                    const res = await fetch("http://localhost:5000/api/auth/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    });
+
+                    const data = await res.json();
+                    console.log(data);
+                    console.log("TOKEN =", data.token);
+                    console.log("USER =", data.user);
+
+                    if (data.success) {
+
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("user", JSON.stringify(data.user));
+
+                        alert("Login Successful");
+
+                        window.location.href = "dashboard.html";
+
+                    } else {
+
+                        alert(data.message || "Login Failed");
+
+                    }
+
+                } catch (error) {
+
+                    alert("Server is not running!");
+
+                }
+
+            }
+        </script>
+
+    </div>
+
+</body>
+
+</html>
