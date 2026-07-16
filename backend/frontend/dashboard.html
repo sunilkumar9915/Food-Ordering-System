@@ -394,7 +394,7 @@
         }
         async function getFoods() {
 
-            const res = await fetch("http://localhost:5000/api/foods");
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods");
             if (!res.ok) {
                 alert("Server Error");
                 return;
@@ -465,7 +465,7 @@
 
     try {
 
-        const res = await fetch("http://localhost:5000/api/foods/top-rated");
+        const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods/top-rated");
         const data = await res.json();
 
         if (!data.success) return;
@@ -509,7 +509,7 @@ async function loadDashboardAnalytics() {
 
     try {
 
-        const res = await fetch("http://localhost:5000/api/foods/dashboard");
+        const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods/dashboard");
 
         const data = await res.json();
 
@@ -617,7 +617,7 @@ async function loadDashboardAnalytics() {
 
             if (!confirm("Delete this food?")) return;
 
-            const res = await fetch("http://localhost:5000/api/foods/" + id, {
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods/" + id, {
                 method: "DELETE"
             });
 
@@ -636,7 +636,7 @@ async function loadDashboardAnalytics() {
 
         async function updateFood(id) {
 
-    const res = await fetch("http://localhost:5000/api/foods");
+    const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods");
 
     const data = await res.json();
 
@@ -690,7 +690,7 @@ function closeUpdateForm() {
         async function placeOrder(foodId, price) {
             console.log("TOKEN =", token);
 
-            const res = await fetch("http://localhost:5000/api/orders", {
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/orders", {
 
                 method: "POST",
 
@@ -839,7 +839,7 @@ function showCart() {
 
             });
 
-            const res = await fetch("http://localhost:5000/api/orders", {
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/orders", {
 
                 method: "POST",
 
@@ -867,7 +867,7 @@ function showCart() {
 
         async function getOrders() {
 
-            const res = await fetch("http://localhost:5000/api/orders", {
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/orders", {
 
                 headers: {
                     "Authorization": "Bearer " + token
@@ -921,7 +921,7 @@ function showCart() {
 
             if (!keyword) return;
 
-            const res = await fetch("http://localhost:5000/api/foods");
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods");
 
             if (!res.ok) {
                 alert("Server Error");
@@ -1012,7 +1012,7 @@ function showCart() {
                 formData.append("image", image);
             }
 
-            const res = await fetch("http://localhost:5000/api/foods", {
+            const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods", {
 
                 method: "POST",
 
@@ -1052,7 +1052,7 @@ function showCart() {
         formData.append("image", image);
     }
 
-    const res = await fetch("http://localhost:5000/api/foods/" + id, {
+    const res = await fetch("https://food-ordering-system-production-abb0.up.railway.app/api/foods/" + id, {
         method: "PUT",
         body: formData
     });
