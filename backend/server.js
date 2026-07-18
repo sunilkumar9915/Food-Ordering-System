@@ -1,6 +1,7 @@
 console.log("🔥 SERVER FILE LOADED");
 require("dotenv").config();
 
+
 const mongoose = require("mongoose");
 const app = require("./app");
 
